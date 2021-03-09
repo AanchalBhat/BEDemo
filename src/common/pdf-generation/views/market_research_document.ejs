@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <title><%= document.documentId %></title>
+    <style>
+      body, html {
+        width: 180mm;
+      }
+      body {
+        font-family: "Courier New", Courier, monospace !important;
+        color: black;
+      }
+      .mw-200 {
+        max-width: 200mm;
+        text-align: justify;
+      }
+      u {
+        font-weight: 800;
+      }
+      .text-muted {
+        color: #333 !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="">
+        <div class="col-6"  style="float: left;">
+          <div class="h5">
+            <span style="font-weight: 800;">
+              Prepared By:
+            </span>
+            <span class="text-muted"><%= document.provider %></span>
+          </div>
+        </div>
+        <div class="col-6"  style="float: right;">
+          <div class="h5" >
+            <span style="font-weight: 800;">
+              Date:
+            </span>
+            <span class="text-muted">
+              <%= new Date(document.createdAt).toDateString().slice(-11) %>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 mw-200">
+        <div class="col-12 h5"><u>Authority</u></div>
+        <div class="col-12 h5 text-muted">
+          <%= document.authority %></
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5 mb-3"><u>Background Information</u></div>
+        <div class="col-12 h5">
+          <b>Program Name:</b>
+          <span class="text-muted"><%= document.officeSymbol %></span>
+        </div>
+        <div class="col-12 h5">
+          <b>Organization:</b>
+          <span class="text-muted">
+            <%= document.agencyList.find(
+      (a) => a.Agency_ID ===document.organization
+    ).Agency_Name %>
+          </span>
+        </div>
+        <div class="col-6 h5">
+          <b>Type of Acquisition:</b>
+          <span class="text-muted text-capitalize"
+            ><%= document.acquisition %></span
+          >
+        </div>
+        <div class="col-6 h5">
+          <b>Expected Dollor Value:</b>
+          <span class="text-muted">$<%= document.price_value %></span>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5"><u>Initial User Requirements</u></div>
+        <div class="col-12 h5 text-muted">
+          <%= document.requirements %>
+        </div>
+      </div>
+      <div class="mt-4  mw-200">
+        <div class="col-12 h5">
+          <u>Functional Involvement in Market Research</u>
+        </div>
+        <div class="col-12 h6">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">UserId</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Office Symbol</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% document.involvementTableData.forEach((inv, index) => { %>
+              <tr>
+                <th scope="row"><%= index+1 %></th>
+                <td><%= inv.userId %></td>
+                <td>
+                  <% const x = inv.phone.replace(/\D/g,
+                  '').match(/(\d{1})(\d{3})(\d{3})(\d{4})/) %> <%= '+'+ x[1]
+                  +'(' + x[2] + ') ' + x[3] + '-' + x[4] %>
+                </td>
+                <td><%= inv.office_symbol %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Market Research Techniques and Sources</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.techSources.find(tx => tx.value ===
+                            document.techSource).label %>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Available Sources</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <ul>
+            <% document.sources.forEach(source => { %>
+            <li><%= source.LEGAL_BUSINESS_NAME %></li>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Product/Service Characteristic</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.characteristic %>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Extent of Commerciality in the Market</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.extentMarket %>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Prevalent Business Practices</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.businessPractices %>
+        </div>
+      </div>
+      <div class="mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Market and Pricing Issues</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.issues %>
+        </div>
+      </div>
+      <div class=" mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Estimated Price or Value</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          $<%= document.issues_amt %>
+        </div>
+      </div>
+      <div class=" mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Other Considerations</u>
+        </div>
+        <div class="col-12 h5 text-muted">
+          <%= document.consideration %>
+        </div>
+      </div>
+      <div class=" mt-4 mw-200">
+        <div class="col-12 h5">
+          <u>Market Analysis Summary</u>
+        </div>
+        <div class="col-12 h6">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Market research techniques and source</th>
+                <th scope="col">Available sources</th>
+                <th scope="col">Vendor Duns Number</th>
+                <th scope="col">Vendor Social Economic</th>
+                <th scope="col">Estimated Price or Value</th>
+                <th scope="col">Market price issue</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% document.compileDataTable.forEach((cdt, index) => { %>
+              <tr>
+                <th scope=""><%= index+1 %></th>
+                <td>
+                  <%= document.techSources.find(tx => tx.value ===
+                  cdt.TECHNIQUES_AND_SOURCE).label %>
+                </td>
+                <td><%= cdt.VENDOR_INFORMATION %></td>
+                <td><%= cdt.VEN_DUN %></td>
+                <td>
+                  <%= document.companyScales.find(cs => cs.value ===
+                  cdt.VEND_SOCIAL_ECONOMIC ).label %>
+                </td>
+                <td>$<%= cdt.price_value %></td>
+                <td>$<%= cdt.MKT_PRICE_ISSUE %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% if (document.priceMatrix.length > 0) { %>
+        <div class=" mt-4 mw-200">
+          <div class="col-12 h5">
+            <u>Cost and price analyst work sheet</u>
+          </div>
+      <div class="col-12 h6">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Description</th>
+              <th scope="col">Government Costs</th>
+              <th scope="col">Historical Price</th>
+              <th scope="col">Catalog Price</th>
+              <th scope="col">Average Price</th>
+              <th scope="col">Plus 15% of AVG</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% document.priceMatrix.forEach((cdt, index) => { %>
+            <tr>
+              <th scope=""><%= index+1 %></th>
+              <td>
+                <%= document.description %>
+              </td>
+              <td><%= cdt.governmentCosts %></td>
+              <td><%= cdt.historicalPrice %></td>
+              <td>
+                <%= document.catalogPrice %>
+              </td>
+              <td>$<%= cdt.averagePrice %></td>
+              <td>$<%= cdt.plusAvg %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+      <% } %>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
